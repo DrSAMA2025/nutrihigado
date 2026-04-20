@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriHígado — Food & Liver Health Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:   #2d6a4f;
+  --green-l: #40916c;
+  --green-xl:#b7e4c7;
+  --amber:   #e9c46a;
+  --rust:    #c1440e;
+  --cream:   #faf7f0;
+  --ink:     #1a1208;
+  --muted:   #6b7c6e;
+  --border:  #d4e0d8;
+  --white:   #ffffff;
+  --card:    #f3f8f5;
+  --shadow:  0 2px 16px rgba(45,106,79,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── LANG TOGGLE ── */
+.lang-bar {
+  background: var(--ink);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 32px;
+  gap: 8px;
+}
+.lang-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: var(--green-l);
+  border-color: var(--green-l);
+  color: white;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,247,240,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green);
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--rust); font-style: italic; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 13px; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--green); }
+.disclaimer-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  background: #fff3cd;
+  border: 1px solid var(--amber);
+  color: #856404;
+  padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-l) 60%, #52b788 100%);
+  padding: 72px 80px 64px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 65%);
+}
+.hero-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: var(--green-xl); text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-badge::before { content:''; display:block; width:28px; height:1px; background:var(--green-xl); }
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 700; line-height: 1.05;
+  color: white; margin-bottom: 8px;
+}
+.hero h1 em { font-style: italic; color: var(--amber); }
+.hero-sub {
+  font-size: 17px; color: rgba(255,255,255,0.80);
+  max-width: 580px; margin-bottom: 36px; font-weight: 300;
+}
+.hero-stats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+.stat { }
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 32px; font-weight: 600; color: var(--amber);
+  line-height: 1;
+}
+.stat-label { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+/* ── DISCLAIMER ── */
+.disclaimer-banner {
+  background: #fff8e1;
+  border-left: 4px solid var(--amber);
+  padding: 16px 32px;
+  font-size: 13px; color: #5a4500;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.disclaimer-banner strong { font-weight: 600; }
+
+/* ── SECTION ── */
+section { padding: 64px 80px; }
+section:nth-child(even) { background: var(--white); }
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--green-l);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600; line-height: 1.15;
+  margin-bottom: 10px;
+}
+.section-desc {
+  font-size: 15px; color: var(--muted);
+  max-width: 540px; margin-bottom: 44px;
+}
+
+/* ── TAB SYSTEM ── */
+.tabs {
+  display: flex; gap: 4px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 32px; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 22px;
+  border: none; background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--muted); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px; transition: all 0.2s;
+}
+.tab-btn.active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── RESOURCE CARDS ── */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.resource-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px;
+  display: inline-block; margin-bottom: 12px;
+}
+.tag-food { background: #d8f3dc; color: var(--green); }
+.tag-benefits { background: #fff3cd; color: #7a5900; }
+.tag-health { background: #fde8e8; color: #9b2226; }
+.tag-nutrition { background: #e8f4fd; color: #1a6fa0; }
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 600;
+  margin-bottom: 8px; color: var(--ink);
+}
+.card-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+.card-detail {
+  font-size: 12px; color: var(--ink);
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-bottom: 6px;
+}
+.card-detail .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.card-link {
+  display: inline-block; margin-top: 12px;
+  font-size: 13px; font-weight: 600;
+  color: var(--green-l); text-decoration: none;
+  border-bottom: 1px solid var(--green-xl);
+  transition: color 0.2s;
+}
+.card-link:hover { color: var(--green); }
+.spanish-badge {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 10px; background: var(--green-xl);
+  color: var(--green); padding: 2px 8px;
+  border-radius: 10px; font-weight: 600;
+}
+
+/* ── DIET GUIDE ── */
+.diet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.diet-card {
+  border-radius: 12px;
+  padding: 28px;
+  border: 1px solid var(--border);
+}
+.diet-card.good { background: #f0faf4; border-color: #b7e4c7; }
+.diet-card.avoid { background: #fff5f5; border-color: #ffcdd2; }
+.diet-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.diet-card ul { list-style: none; }
+.diet-card ul li {
+  font-size: 14px; padding: 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.diet-card ul li::before { flex-shrink: 0; margin-top: 1px; }
+.diet-card.good ul li::before { content: '✓'; color: var(--green-l); font-weight: 700; }
+.diet-card.avoid ul li::before { content: '✗'; color: var(--rust); font-weight: 700; }
+.diet-note {
+  background: #fffbeb;
+  border: 1px solid var(--amber);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 24px;
+  font-size: 14px; color: var(--ink);
+}
+.diet-note strong { color: var(--rust); }
+
+/* ── FINDER ── */
+.finder-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+  max-width: 600px;
+}
+.finder-box label {
+  display: block;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink); margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.finder-box input, .finder-box select {
+  width: 100%; padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px; font-family: 'DM Sans', sans-serif;
+  font-size: 15px; color: var(--ink);
+  background: white; margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.finder-box input:focus, .finder-box select:focus {
+  outline: none; border-color: var(--green-l);
+}
+.btn-primary {
+  background: var(--green);
+  color: white; border: none;
+  padding: 14px 32px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s, transform 0.1s;
+  width: 100%;
+}
+.btn-primary:hover { background: var(--green-l); transform: translateY(-1px); }
+.finder-results { margin-top: 28px; }
+.result-item {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 20px;
+  margin-bottom: 12px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.result-icon {
+  font-size: 24px; flex-shrink: 0;
+  width: 44px; height: 44px;
+  background: var(--card); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.result-name { font-weight: 600; font-size: 15px; margin-bottom: 3px; }
+.result-detail { font-size: 13px; color: var(--muted); }
+
+/* ── CHECKLIST ── */
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.check-item {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
+}
+.check-item:hover { border-color: var(--green-l); }
+.check-item.checked { background: #f0faf4; border-color: var(--green); }
+.check-box {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 2px solid var(--border); flex-shrink: 0;
+  margin-top: 1px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; background: white;
+}
+.check-item.checked .check-box { background: var(--green); border-color: var(--green); }
+.check-box::after { content: ''; display: none; }
+.check-item.checked .check-box::after {
+  content: '✓'; display: block; color: white;
+  font-size: 13px; font-weight: 700;
+}
+.check-text { font-size: 14px; }
+.check-text strong { display: block; margin-bottom: 2px; }
+
+/* ── HOTLINE CARD ── */
+.hotlines {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.hotline-card {
+  background: white; border: 2px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  text-align: center;
+}
+.hotline-card.urgent { border-color: var(--rust); background: #fff5f5; }
+.hotline-card h3 { font-family: 'Fraunces', serif; font-size: 17px; margin-bottom: 8px; }
+.hotline-number {
+  font-family: 'Fraunces', serif; font-style: italic;
+  font-size: 26px; color: var(--green); font-weight: 600;
+  margin: 10px 0;
+}
+.hotline-card.urgent .hotline-number { color: var(--rust); }
+.hotline-desc { font-size: 12px; color: var(--muted); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.6);
+  padding: 40px 80px;
+  font-size: 13px;
+}
+footer .footer-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 24px;
+  flex-wrap: wrap; gap: 20px;
+}
+.footer-logo {
+  font-family: 'Fraunces', serif; font-size: 20px;
+  color: white; font-weight: 700;
+}
+.footer-logo span { color: var(--amber); font-style: italic; }
+.footer-credit {
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+}
+hr.footer-line { border: none; border-top: 1px solid #333; margin-bottom: 20px; }
+
+/* ── LANGUAGE SWITCHING ── */
+[data-en], [data-es] { }
+body.lang-es [data-en] { display: none !important; }
+body.lang-en [data-es] { display: none !important; }
+
+/* ── ANIMATIONS ── */
+.hero, .resource-card, .diet-card, .hotline-card {
+  animation: fadeUp 0.5s ease both;
+}
+.resource-card:nth-child(2) { animation-delay: 0.05s; }
+.resource-card:nth-child(3) { animation-delay: 0.1s; }
+.resource-card:nth-child(4) { animation-delay: 0.15s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  section { padding: 48px 24px; }
+  .hero { padding: 48px 24px; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .diet-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+  footer { padding: 32px 24px; }
+}
+</style>
+</head>
+<body class="lang-en">
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">🇺🇸 English</button>
+  <button class="lang-btn" onclick="setLang('es')" id="btn-es">🇲🇽 Español</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Nutri<span>Hígado</span></a>
+  <ul class="nav-links">
+    <li><a href="#resources" data-en>Resources</a><a href="#resources" data-es style="display:none">Recursos</a></li>
+    <li><a href="#diet" data-en>Liver Diet</a><a href="#diet" data-es style="display:none">Dieta</a></li>
+    <li><a href="#finder" data-en>Find Help</a><a href="#finder" data-es style="display:none">Buscar Ayuda</a></li>
+    <li><a href="#checklist" data-en>Checklist</a><a href="#checklist" data-es style="display:none">Lista</a></li>
+  </ul>
+  <span class="disclaimer-chip" data-en>⚠️ Not medical advice</span>
+  <span class="disclaimer-chip" data-es style="display:none">⚠️ No es consejo médico</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge" data-en>Los Angeles & Southern California</div>
+  <div class="hero-badge" data-es style="display:none">Los Ángeles y el Sur de California</div>
+  <h1 data-en>Food support for<br><em>liver health.</em></h1>
+  <h1 data-es style="display:none">Apoyo alimentario para<br><em>la salud del hígado.</em></h1>
+  <p class="hero-sub" data-en>A free navigator for patients with liver disease to find food assistance, understand what to eat, and connect with local support — in English and Spanish.</p>
+  <p class="hero-sub" data-es style="display:none">Un navegador gratuito para pacientes con enfermedad del hígado — encuentre ayuda alimentaria, aprenda qué comer y conéctese con apoyo local — en inglés y español.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">1 in 4</div>
+      <div class="stat-label" data-en>LA County residents face food insecurity</div>
+      <div class="stat-label" data-es style="display:none">residentes del Condado de LA enfrentan inseguridad alimentaria</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">940+</div>
+      <div class="stat-label" data-en>food pantries across LA County</div>
+      <div class="stat-label" data-es style="display:none">despensas de alimentos en el Condado de LA</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2M</div>
+      <div class="stat-label" data-en>people food insecure in LA County</div>
+      <div class="stat-label" data-es style="display:none">personas con inseguridad alimentaria en el Condado de LA</div>
+    </div>
+  </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-banner">
+  <span style="font-size:20px">⚠️</span>
+  <div>
+    <span data-en><strong>Medical Disclaimer:</strong> NutriHígado provides general information only and does not replace the advice of your doctor, hepatologist, or dietitian. Always consult your healthcare provider before making changes to your diet, especially if you have cirrhosis, ascites, hepatic encephalopathy, or other liver complications.</span>
+    <span data-es style="display:none"><strong>Aviso Médico:</strong> NutriHígado proporciona información general únicamente y no reemplaza el consejo de su médico, hepatólogo o dietista. Siempre consulte a su proveedor de salud antes de hacer cambios en su dieta, especialmente si tiene cirrosis, ascitis, encefalopatía hepática u otras complicaciones hepáticas.</span>
+  </div>
+</div>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="section-label" data-en>Food Assistance</div>
+  <div class="section-label" data-es style="display:none">Asistencia Alimentaria</div>
+  <h2 class="section-title" data-en>Find food support near you</h2>
+  <h2 class="section-title" data-es style="display:none">Encuentre apoyo alimentario cerca de usted</h2>
+  <p class="section-desc" data-en>Key programs and organizations serving low-income patients with chronic illness in the Los Angeles area.</p>
+  <p class="section-desc" data-es style="display:none">Programas y organizaciones clave que sirven a pacientes de bajos ingresos con enfermedades crónicas en el área de Los Ángeles.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('food')">
+      <span data-en>🥦 Food Pantries</span><span data-es style="display:none">🥦 Despensas</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('benefits')">
+      <span data-en>💳 Benefits & SNAP</span><span data-es style="display:none">💳 Beneficios y SNAP</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('medmeals')">
+      <span data-en>🍽️ Medically Tailored</span><span data-es style="display:none">🍽️ Comidas Médicas</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('hotlines')">
+      <span data-en>📞 Hotlines</span><span data-es style="display:none">📞 Líneas de Ayuda</span>
+    </button>
+  </div>
+
+  <!-- FOOD PANTRIES -->
+  <div class="tab-panel active" id="tab-food">
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-food" data-en>Food Bank</span>
+        <span class="card-tag tag-food" data-es style="display:none">Banco de Alimentos</span>
+        <div class="card-title">LA Regional Food Bank</div>
+        <div class="card-desc" data-en>LA's largest food bank with 940+ partner agencies across the county. Find your nearest pantry by zip code.</div>
+        <div class="card-desc" data-es style="display:none">El banco de alimentos más grande de LA con más de 940 agencias asociadas. Encuentre la despensa más cercana por código postal.</div>
+        <div class="card-detail"><span class="icon">📍</span>Countywide, Los Angeles</div>
+        <div class="card-detail"><span class="icon">🌐</span>lafoodbank.org</div>
+        <div class="card-detail"><span class="icon">📞</span>323-234-3030</div>
+        <a href="https://www.lafoodbank.org" target="_blank" class="card-link" data-en>Find a pantry →</a>
+        <a href="https://www.lafoodbank.org" target="_blank" class="card-link" data-es style="display:none">Encontrar una despensa →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-food" data-en>Mobile Pantry</span>
+        <span class="card-tag tag-food" data-es style="display:none">Despensa Móvil</span>
+        <div class="card-title">LA Food Bank Mobile Pantry</div>
+        <div class="card-desc" data-en>Mobile food distribution visiting underserved neighborhoods. No ID required. Distributes fresh produce and staples.</div>
+        <div class="card-desc" data-es style="display:none">Distribución móvil de alimentos que visita vecindarios desatendidos. No se requiere identificación. Distribuye frutas frescas y artículos de primera necesidad.</div>
+        <div class="card-detail"><span class="icon">📍</span>East LA, South LA, Boyle Heights</div>
+        <div class="card-detail"><span class="icon">🗓️</span><span data-en>Schedule varies — check website</span><span data-es style="display:none">Horario varía — consulte el sitio web</span></div>
+        <div class="card-detail"><span class="icon">💰</span><span data-en>Free, no income verification</span><span data-es style="display:none">Gratis, sin verificación de ingresos</span></div>
+        <a href="https://www.lafoodbank.org/programs/mobile-food-pantry/" target="_blank" class="card-link" data-en>View schedule →</a>
+        <a href="https://www.lafoodbank.org/programs/mobile-food-pantry/" target="_blank" class="card-link" data-es style="display:none">Ver horario →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-food" data-en>Community Fridge</span>
+        <span class="card-tag tag-food" data-es style="display:none">Despensa Comunitaria</span>
+        <div class="card-title">211 LA Food Locator</div>
+        <div class="card-desc" data-en>Call or text 211 to be connected with the nearest food pantry, soup kitchen, or emergency food resource in your area.</div>
+        <div class="card-desc" data-es style="display:none">Llame o envíe un mensaje al 211 para conectarse con la despensa de alimentos, comedor comunitario o recurso de emergencia más cercano.</div>
+        <div class="card-detail"><span class="icon">📞</span>Call or text: <strong>2-1-1</strong></div>
+        <div class="card-detail"><span class="icon">🕐</span><span data-en>24/7, available in Spanish</span><span data-es style="display:none">24/7, disponible en español</span></div>
+        <div class="card-detail"><span class="icon">🌐</span>211la.org</div>
+        <a href="https://www.211la.org" target="_blank" class="card-link" data-en>Visit 211 LA →</a>
+        <a href="https://www.211la.org" target="_blank" class="card-link" data-es style="display:none">Visitar 211 LA →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-food">Food Forward</span>
+        <div class="card-title">Food Forward</div>
+        <div class="card-desc" data-en>Rescues surplus produce from farmers markets and grocery stores and distributes to pantries across LA and SoCal.</div>
+        <div class="card-desc" data-es style="display:none">Rescata productos excedentes de mercados de agricultores y tiendas de comestibles para distribuirlos en toda el área de LA y SoCal.</div>
+        <div class="card-detail"><span class="icon">📍</span>Southern California wide</div>
+        <div class="card-detail"><span class="icon">🥬</span><span data-en>Fresh produce focus — great for liver health</span><span data-es style="display:none">Enfoque en productos frescos — ideal para la salud del hígado</span></div>
+        <div class="card-detail"><span class="icon">🌐</span>foodforward.org</div>
+        <a href="https://foodforward.org" target="_blank" class="card-link" data-en>Learn more →</a>
+        <a href="https://foodforward.org" target="_blank" class="card-link" data-es style="display:none">Más información →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <div class="tab-panel" id="tab-benefits">
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-benefits" data-en>Government Program</span>
+        <span class="card-tag tag-benefits" data-es style="display:none">Programa Gubernamental</span>
+        <div class="card-title">CalFresh (SNAP)</div>
+        <div class="card-desc" data-en>California's food stamp program. Provides monthly EBT benefits to purchase groceries. Many liver patients qualify. Apply online at BenefitsCal.com.</div>
+        <div class="card-desc" data-es style="display:none">El programa de estampillas de comida de California. Proporciona beneficios mensuales en tarjeta EBT para comprar alimentos. Muchos pacientes con enfermedades del hígado califican. Solicite en línea en BenefitsCal.com.</div>
+        <div class="card-detail"><span class="icon">💳</span><span data-en>EBT card, accepted at most grocery stores</span><span data-es style="display:none">Tarjeta EBT, aceptada en la mayoría de tiendas</span></div>
+        <div class="card-detail"><span class="icon">⚠️</span><span data-en>Note: 2026 changes affect non-citizens. Check eligibility.</span><span data-es style="display:none">Nota: Cambios en 2026 afectan a no ciudadanos. Verifique elegibilidad.</span></div>
+        <div class="card-detail"><span class="icon">🌐</span>benefitscal.com</div>
+        <a href="https://benefitscal.com" target="_blank" class="card-link" data-en>Apply now →</a>
+        <a href="https://benefitscal.com" target="_blank" class="card-link" data-es style="display:none">Solicitar ahora →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-benefits" data-en>CalFresh Outreach</span>
+        <span class="card-tag tag-benefits" data-es style="display:none">Asistencia CalFresh</span>
+        <div class="card-title">LA Food Bank CalFresh Outreach</div>
+        <div class="card-desc" data-en>Free help applying for CalFresh benefits. Outreach workers assist at clinics, community centers, and health fairs throughout LA County.</div>
+        <div class="card-desc" data-es style="display:none">Ayuda gratuita para solicitar beneficios de CalFresh. Trabajadores de divulgación ayudan en clínicas, centros comunitarios y ferias de salud en todo el Condado de LA.</div>
+        <div class="card-detail"><span class="icon">📞</span>323-234-3030</div>
+        <div class="card-detail"><span class="icon">🏥</span><span data-en>Available at health clinics countywide</span><span data-es style="display:none">Disponible en clínicas de salud en todo el condado</span></div>
+        <a href="https://www.lafoodbank.org/programs/calfresh/" target="_blank" class="card-link" data-en>Get application help →</a>
+        <a href="https://www.lafoodbank.org/programs/calfresh/" target="_blank" class="card-link" data-es style="display:none">Obtener ayuda con la solicitud →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-benefits" data-en>Seniors & Disabled</span>
+        <span class="card-tag tag-benefits" data-es style="display:none">Adultos Mayores</span>
+        <div class="card-title">CSFP (Commodity Supplemental Food Program)</div>
+        <div class="card-desc" data-en>Monthly food boxes for low-income seniors 60+. LA Food Bank operates the largest CSFP in the country — 117 sites across LA County.</div>
+        <div class="card-desc" data-es style="display:none">Cajas de alimentos mensuales para adultos mayores de bajos ingresos de 60+. El Banco de Alimentos de LA opera el CSFP más grande del país — 117 sitios en todo el Condado de LA.</div>
+        <div class="card-detail"><span class="icon">📍</span>117 sites across LA County</div>
+        <div class="card-detail"><span class="icon">👴</span><span data-en>For adults 60+ with low income</span><span data-es style="display:none">Para adultos de 60+ con bajos ingresos</span></div>
+        <a href="https://www.lafoodbank.org/programs/csfp/" target="_blank" class="card-link" data-en>Find a site →</a>
+        <a href="https://www.lafoodbank.org/programs/csfp/" target="_blank" class="card-link" data-es style="display:none">Encontrar un sitio →</a>
+      </div>
+      <div class="resource-card">
+        <span class="card-tag tag-benefits" data-en>Multi-Benefit Screening</span>
+        <span class="card-tag tag-benefits" data-es style="display:none">Elegibilidad de Beneficios</span>
+        <div class="card-title">West LA FamilySource Center</div>
+        <div class="card-desc" data-en>Free multi-benefit screening including CalFresh, Medi-Cal, housing, legal services, and food assistance. All services free for low/moderate income City of LA residents.</div>
+        <div class="card-desc" data-es style="display:none">Evaluación gratuita de múltiples beneficios incluyendo CalFresh, Medi-Cal, vivienda, servicios legales y asistencia alimentaria. Todos los servicios son gratuitos para residentes de bajos ingresos de la Ciudad de LA.</div>
+        <div class="card-detail"><span class="icon">📍</span>West Los Angeles</div>
+        <div class="card-detail"><span class="icon">💰</span><span data-en>All services free</span><span data-es style="display:none">Todos los servicios gratis</span></div>
+        <a href="https://www.211la.org" target="_blank" class="card-link" data-en>Learn more →</a>
+        <a href="https://www.211la.org" target="_blank" class="card-link" data-es style="display:none">Más información →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDICALLY TAILORED MEALS -->
+  <div class="tab-panel" id="tab-medmeals">
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-nutrition">Medically Tailored</span>
+        <div class="card-title">LA Care Health Plan — Nutrition Support</div>
+        <div class="card-desc" data-en>LA Care has committed $5.4M in nutrition support for low-income Medi-Cal patients. Works with the LA Food Bank and Food Forward to distribute groceries and fresh foods. Ask your doctor for a referral.</div>
+        <div class="card-desc" data-es style="display:none">LA Care ha comprometido $5.4M en apoyo nutricional para pacientes de Medi-Cal de bajos ingresos. Trabaja con el Banco de Alimentos de LA y Food Forward para distribuir comestibles y alimentos frescos. Pídale a su médico una derivación.</div>
+        <div class="card-detail"><span class="icon">🏥</span><span data-en>Must be a Medi-Cal / LA Care member</span><span data-es style="display:none">Debe ser miembro de Medi-Cal / LA Care</span></div>
+        <div class="card-detail"><span class="icon">📞</span>1-888-452-2273</div>
+        <a href="https://www.lacare.org" target="_blank" class="card-link" data-en>Contact LA Care →</a>
+        <a href="https://www.lacare.org" target="_blank" class="card-link" data-es style="display:none">Contactar LA Care →</a>
+      </div>
+      <div class="resource-card">
+        <span class="card-tag tag-nutrition">Food is Medicine</span>
+        <div class="card-title">Medi-Cal Food RX Programs</div>
+        <div class="card-desc" data-en>California's Medi-Cal program includes Food is Medicine initiatives providing medically tailored meals for patients with chronic conditions like cirrhosis and MASLD. Ask your social worker or care team at LAC+USC.</div>
+        <div class="card-desc" data-es style="display:none">El programa Medi-Cal de California incluye iniciativas de "El Alimento es Medicina" que proporcionan comidas adaptadas médicamente para pacientes con condiciones crónicas como cirrosis y MASLD. Consulte a su trabajador social en LAC+USC.</div>
+        <div class="card-detail"><span class="icon">🍽️</span><span data-en>Fully prepared meals delivered to your home</span><span data-es style="display:none">Comidas completamente preparadas entregadas a domicilio</span></div>
+        <div class="card-detail"><span class="icon">🏥</span><span data-en>Ask your LAC+USC care team for eligibility</span><span data-es style="display:none">Pregúntele a su equipo médico en LAC+USC sobre elegibilidad</span></div>
+        <a href="https://www.chcs.org/resource/medically-tailored-meals/" target="_blank" class="card-link" data-en>Learn about MTM →</a>
+        <a href="https://www.chcs.org/resource/medically-tailored-meals/" target="_blank" class="card-link" data-es style="display:none">Conocer más sobre MTM →</a>
+      </div>
+      <div class="resource-card">
+        <div class="spanish-badge">Español ✓</div>
+        <span class="card-tag tag-nutrition">Nutrition Counseling</span>
+        <div class="card-title">CalFresh Healthy Living (SNAP-Ed)</div>
+        <div class="card-desc" data-en>Free nutrition education and cooking classes for CalFresh-eligible individuals. Teaches how to prepare affordable, healthy meals — including options appropriate for liver disease.</div>
+        <div class="card-desc" data-es style="display:none">Educación nutricional gratuita y clases de cocina para personas elegibles para CalFresh. Enseña cómo preparar comidas saludables y asequibles, incluyendo opciones apropiadas para enfermedades del hígado.</div>
+        <div class="card-detail"><span class="icon">🥘</span><span data-en>Cooking classes and nutrition workshops</span><span data-es style="display:none">Clases de cocina y talleres de nutrición</span></div>
+        <div class="card-detail"><span class="icon">💰</span><span data-en>Free for CalFresh-eligible individuals</span><span data-es style="display:none">Gratis para personas elegibles para CalFresh</span></div>
+        <a href="http://publichealth.lacounty.gov/nut/calfresh_healthy_living.htm" target="_blank" class="card-link" data-en>Find classes →</a>
+        <a href="http://publichealth.lacounty.gov/nut/calfresh_healthy_living.htm" target="_blank" class="card-link" data-es style="display:none">Encontrar clases →</a>
+      </div>
+      <div class="resource-card">
+        <span class="card-tag tag-nutrition">Hospital Program</span>
+        <div class="card-title">LAC+USC Social Work Referrals</div>
+        <div class="card-desc" data-en>Patients at LAC+USC can ask their care team to connect with a social worker who can screen for food insecurity and refer to appropriate food and nutrition resources in the community.</div>
+        <div class="card-desc" data-es style="display:none">Los pacientes en LAC+USC pueden pedirle a su equipo de atención que los conecte con un trabajador social que puede evaluar la inseguridad alimentaria y referirlos a recursos alimentarios y nutricionales apropiados en la comunidad.</div>
+        <div class="card-detail"><span class="icon">🏥</span>LAC+USC Medical Center</div>
+        <div class="card-detail"><span class="icon">📞</span><span data-en>Ask your nurse or doctor for a referral</span><span data-es style="display:none">Pida a su enfermera o médico una derivación</span></div>
+        <div class="card-detail"><span class="icon">📍</span>2020 Zonal Ave, Los Angeles, CA 90033</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOTLINES -->
+  <div class="tab-panel" id="tab-hotlines">
+    <div class="hotlines">
+      <div class="hotline-card urgent">
+        <h3 data-en>🆘 Food Emergency</h3>
+        <h3 data-es style="display:none">🆘 Emergencia Alimentaria</h3>
+        <div class="hotline-number">2-1-1</div>
+        <div class="hotline-desc" data-en>Call or text 211 anytime. 24/7 referrals to food, shelter, and health resources. Available in Spanish.</div>
+        <div class="hotline-desc" data-es style="display:none">Llame o envíe un mensaje al 211 en cualquier momento. Referencias 24/7 para alimentos, refugio y recursos de salud. Disponible en español.</div>
+      </div>
+      <div class="hotline-card">
+        <h3 data-en>🍽️ Hunger Hotline</h3>
+        <h3 data-es style="display:none">🍽️ Línea contra el Hambre</h3>
+        <div class="hotline-number">1-866-3-HUNGRY</div>
+        <div class="hotline-desc" data-en>National hunger hotline. Spanish: 1-877-8-HAMBRE. Find food assistance near you.</div>
+        <div class="hotline-desc" data-es style="display:none">Línea nacional contra el hambre. Español: 1-877-8-HAMBRE. Encuentre ayuda alimentaria cerca de usted.</div>
+      </div>
+      <div class="hotline-card">
+        <h3 data-en>💳 CalFresh Help</h3>
+        <h3 data-es style="display:none">💳 Ayuda con CalFresh</h3>
+        <div class="hotline-number">1-877-847-3663</div>
+        <div class="hotline-desc" data-en>LA County DPSS. Apply for CalFresh, check your case, report changes. Available in Spanish.</div>
+        <div class="hotline-desc" data-es style="display:none">DPSS del Condado de LA. Solicite CalFresh, verifique su caso, informe cambios. Disponible en español.</div>
+      </div>
+      <div class="hotline-card">
+        <h3 data-en>🏥 LA Care Member</h3>
+        <h3 data-es style="display:none">🏥 Miembro de LA Care</h3>
+        <div class="hotline-number">1-888-452-2273</div>
+        <div class="hotline-desc" data-en>LA Care Health Plan member services. Ask about nutrition support and food assistance programs for Medi-Cal members.</div>
+        <div class="hotline-desc" data-es style="display:none">Servicios para miembros de LA Care Health Plan. Pregunte sobre apoyo nutricional y programas de asistencia alimentaria para miembros de Medi-Cal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVER DIET -->
+<section id="diet">
+  <div class="section-label" data-en>Nutrition Guide</div>
+  <div class="section-label" data-es style="display:none">Guía de Nutrición</div>
+  <h2 class="section-title" data-en>What to eat with liver disease</h2>
+  <h2 class="section-title" data-es style="display:none">Qué comer con enfermedad del hígado</h2>
+  <p class="section-desc" data-en>General guidance based on hepatology guidelines. Your specific needs may differ — always follow your doctor's advice.</p>
+  <p class="section-desc" data-es style="display:none">Guía general basada en pautas de hepatología. Sus necesidades específicas pueden ser diferentes — siempre siga las instrucciones de su médico.</p>
+
+  <div class="diet-grid">
+    <div class="diet-card good">
+      <h3>✅ <span data-en>Eat More</span><span data-es style="display:none">Coma Más</span></h3>
+      <ul>
+        <li data-en>Lean protein: chicken, fish, tofu, eggs, lentils</li>
+        <li data-es style="display:none">Proteína magra: pollo, pescado, tofu, huevos, lentejas</li>
+        <li data-en>Fresh vegetables: broccoli, spinach, carrots, kale</li>
+        <li data-es style="display:none">Verduras frescas: brócoli, espinacas, zanahorias, col rizada</li>
+        <li data-en>Whole grains: brown rice, oats, quinoa, whole wheat bread</li>
+        <li data-es style="display:none">Granos enteros: arroz integral, avena, quinoa, pan integral</li>
+        <li data-en>Fresh fruit: berries, apples, oranges (in moderation)</li>
+        <li data-es style="display:none">Fruta fresca: bayas, manzanas, naranjas (con moderación)</li>
+        <li data-en>Healthy fats: olive oil, nuts, avocado (small amounts)</li>
+        <li data-es style="display:none">Grasas saludables: aceite de oliva, nueces, aguacate (pequeñas cantidades)</li>
+        <li data-en>Late evening snack — helps prevent muscle loss overnight</li>
+        <li data-es style="display:none">Merienda nocturna — ayuda a prevenir la pérdida muscular durante la noche</li>
+      </ul>
+    </div>
+    <div class="diet-card avoid">
+      <h3>⛔ <span data-en>Avoid or Limit</span><span data-es style="display:none">Evitar o Limitar</span></h3>
+      <ul>
+        <li data-en>Alcohol — any amount can worsen liver disease</li>
+        <li data-es style="display:none">Alcohol — cualquier cantidad puede empeorar la enfermedad del hígado</li>
+        <li data-en>High-sodium foods: canned soups, deli meats, fast food (especially with ascites)</li>
+        <li data-es style="display:none">Alimentos con alto contenido de sodio: sopas enlatadas, embutidos, comida rápida (especialmente con ascitis)</li>
+        <li data-en>Fried and ultra-processed foods</li>
+        <li data-es style="display:none">Alimentos fritos y ultraprocesados</li>
+        <li data-en>Raw shellfish: oysters, clams, mussels (infection risk)</li>
+        <li data-es style="display:none">Mariscos crudos: ostras, almejas, mejillones (riesgo de infección)</li>
+        <li data-en>Excess red meat — processed meats like chorizo, bacon</li>
+        <li data-es style="display:none">Exceso de carne roja — carnes procesadas como chorizo, tocino</li>
+        <li data-en>Herbal supplements without doctor approval (some harm the liver)</li>
+        <li data-es style="display:none">Suplementos herbales sin aprobación médica (algunos dañan el hígado)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="diet-note">
+    <strong data-en>⚠️ Special note for patients with cirrhosis and ascites:</strong>
+    <strong data-es style="display:none">⚠️ Nota especial para pacientes con cirrosis y ascitis:</strong>
+    <span data-en> Limit sodium (salt) to less than 2,000 mg per day. Avoid adding salt when cooking. Avoid canned and processed foods. Your doctor may also advise limiting fluids. This is critical to managing fluid buildup.</span>
+    <span data-es style="display:none"> Limite el sodio (sal) a menos de 2,000 mg por día. Evite añadir sal al cocinar. Evite los alimentos enlatados y procesados. Su médico también puede aconsejarle que limite los líquidos. Esto es fundamental para controlar la acumulación de líquidos.</span>
+  </div>
+</section>
+
+<!-- FIND HELP FINDER -->
+<section id="finder">
+  <div class="section-label" data-en>Resource Finder</div>
+  <div class="section-label" data-es style="display:none">Buscador de Recursos</div>
+  <h2 class="section-title" data-en>Find help by zip code</h2>
+  <h2 class="section-title" data-es style="display:none">Encuentre ayuda por código postal</h2>
+  <p class="section-desc" data-en>Enter your zip code to see the most relevant food resources in your neighborhood.</p>
+  <p class="section-desc" data-es style="display:none">Ingrese su código postal para ver los recursos alimentarios más relevantes en su vecindario.</p>
+
+  <div class="finder-box">
+    <label data-en>Your ZIP Code</label>
+    <label data-es style="display:none">Su Código Postal</label>
+    <input type="text" id="zip-input" placeholder="e.g. 90033" maxlength="5"/>
+
+    <label data-en>Your situation</label>
+    <label data-es style="display:none">Su situación</label>
+    <select id="situation-select">
+      <option value="all" data-en>Show all resources</option>
+      <option value="all" data-es style="display:none">Mostrar todos los recursos</option>
+      <option value="food" data-en>I need food right now</option>
+      <option value="benefits" data-en>I need help with CalFresh/benefits</option>
+      <option value="meals" data-en>I have cirrhosis and need special diet help</option>
+    </select>
+
+    <button class="btn-primary" onclick="findResources()">
+      <span data-en>Find Resources Near Me</span>
+      <span data-es style="display:none">Encontrar Recursos Cerca de Mí</span>
+    </button>
+
+    <div class="finder-results" id="finder-results"></div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+  <div class="section-label" data-en>Self-Assessment</div>
+  <div class="section-label" data-es style="display:none">Autoevaluación</div>
+  <h2 class="section-title" data-en>Food security checklist</h2>
+  <h2 class="section-title" data-es style="display:none">Lista de seguridad alimentaria</h2>
+  <p class="section-desc" data-en>Check the boxes that apply to you. Share this with your doctor or social worker at your next visit.</p>
+  <p class="section-desc" data-es style="display:none">Marque las casillas que le apliquen. Comparta esto con su médico o trabajador social en su próxima visita.</p>
+
+  <div class="checklist" id="checklist-grid">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Running low on food</strong>
+        <strong data-es style="display:none">Me quedo sin comida</strong>
+        <span data-en>Often run out before I can get more</span>
+        <span data-es style="display:none">A menudo me quedo sin comida antes de poder conseguir más</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Can't afford healthy food</strong>
+        <strong data-es style="display:none">No puedo costear alimentos saludables</strong>
+        <span data-en>Fresh vegetables and lean protein are too expensive</span>
+        <span data-es style="display:none">Las verduras frescas y las proteínas magras son demasiado caras</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Not enrolled in CalFresh</strong>
+        <strong data-es style="display:none">No estoy inscrito en CalFresh</strong>
+        <span data-en>I may qualify but haven't applied</span>
+        <span data-es style="display:none">Puede que califique pero no he solicitado</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Skipping meals</strong>
+        <strong data-es style="display:none">Saltando comidas</strong>
+        <span data-en>Going more than 8 hours without eating</span>
+        <span data-es style="display:none">Pasar más de 8 horas sin comer</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Eating high-sodium foods</strong>
+        <strong data-es style="display:none">Comiendo alimentos con alto sodio</strong>
+        <span data-en>Relying on canned, processed, or fast food</span>
+        <span data-es style="display:none">Dependiendo de alimentos enlatados, procesados o comida rápida</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Unsure what to eat</strong>
+        <strong data-es style="display:none">No sé qué comer</strong>
+        <span data-en>No one has explained my liver diet clearly</span>
+        <span data-es style="display:none">Nadie me ha explicado claramente mi dieta para el hígado</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>No dietitian access</strong>
+        <strong data-es style="display:none">Sin acceso a dietista</strong>
+        <span data-en>I've never seen a dietitian for my liver disease</span>
+        <span data-es style="display:none">Nunca he visto a un dietista por mi enfermedad del hígado</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong data-en>Transportation barriers</strong>
+        <strong data-es style="display:none">Barreras de transporte</strong>
+        <span data-en>Hard to get to grocery stores or food pantries</span>
+        <span data-es style="display:none">Difícil llegar a tiendas de comestibles o despensas</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="checklist-msg" style="margin-top:24px; padding:20px 24px; border-radius:12px; display:none;"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <hr class="footer-line"/>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Nutri<span>Hígado</span></div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px;" data-en>A food & liver health navigator for Southern California</div>
+      <div style="font-size:12px; color:rgba(255,255,255,0.4); margin-top:6px;" data-es style="display:none">Un navegador de alimentación y salud hepática para el Sur de California</div>
+    </div>
+    <div class="footer-credit">
+      <div data-en>Developed by Somaya Albhaisi, MBBCh, MPH, FACP</div>
+      <div data-es style="display:none">Desarrollado por Somaya Albhaisi, MBBCh, MPH, FACP</div>
+      <div data-en>GI & Hepatology Fellow, Keck School of Medicine, USC</div>
+      <div data-es style="display:none">Becaria de GI y Hepatología, Escuela de Medicina Keck, USC</div>
+      <div style="margin-top:8px; color:rgba(255,255,255,0.3);" data-en>⚠️ This tool is a prototype for research and educational purposes only. Not medical advice.</div>
+      <div style="margin-top:8px; color:rgba(255,255,255,0.3);" data-es style="display:none">⚠️ Esta herramienta es un prototipo solo con fines de investigación y educativos. No es consejo médico.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── LANGUAGE TOGGLE ──────────────────────────────
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+}
+
+// ── TABS ─────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+}
+
+// ── FINDER ───────────────────────────────────────
+const resourceDB = {
+  '90033': [
+    { icon:'🏥', name:'LAC+USC Social Work', detail:'Ask your care team for a social worker referral for food assistance and CalFresh enrollment.' },
+    { icon:'🥦', name:'LA Regional Food Bank (East LA partner)', detail:'Multiple partner agencies near Boyle Heights and East LA. Call 323-234-3030.' },
+    { icon:'💳', name:'CalFresh Outreach at LAC+USC', detail:'Enrollment assistance available at the hospital. Ask a nurse or staff.' },
+  ],
+  '90011': [
+    { icon:'🥦', name:'South LA Food Pantry Network', detail:'Multiple LA Food Bank partner agencies in South LA. Visit lafoodbank.org to find the nearest one.' },
+    { icon:'📞', name:'211 LA', detail:'Call 211 for same-day food emergency referrals in your neighborhood.' },
+    { icon:'💳', name:'DPSS CalFresh Office — South LA', detail:'3029 Wilshire Blvd. Apply for CalFresh in person or at benefitscal.com.' },
+  ],
+  '90057': [
+    { icon:'🥦', name:'Westlake / MacArthur Park Pantry', detail:'LA Food Bank partner agency. Call 211 for exact location and hours.' },
+    { icon:'💳', name:'CalFresh Enrollment Help', detail:'Los Angeles Regional Food Bank Outreach can help you apply. Call 323-234-3030.' },
+    { icon:'🍽️', name:'LA Care Nutrition Support', detail:'If enrolled in Medi-Cal/LA Care, ask about grocery gift cards and fresh food distribution. Call 1-888-452-2273.' },
+  ],
+};
+
+function findResources() {
+  const zip = document.getElementById('zip-input').value.trim();
+  const resultsDiv = document.getElementById('finder-results');
+  const isEs = document.body.classList.contains('lang-es');
+
+  const generic = [
+    { icon:'📞', name:'211 LA — Food Hotline', detail: isEs ? 'Llame al 211 para referencias de alimentos de emergencia en su vecindario. Disponible en español 24/7.' : 'Call 211 for emergency food referrals in your neighborhood. Available in Spanish 24/7.' },
+    { icon:'🥦', name:'LA Regional Food Bank', detail: isEs ? 'Visite lafoodbank.org o llame al 323-234-3030 para encontrar la despensa más cercana a usted.' : 'Visit lafoodbank.org or call 323-234-3030 to find the nearest pantry to you.' },
+    { icon:'💳', name:'CalFresh / SNAP', detail: isEs ? 'Solicite en línea en benefitscal.com o llame al 1-877-847-3663 para asistencia.' : 'Apply online at benefitscal.com or call 1-877-847-3663 for assistance.' },
+  ];
+
+  const resources = resourceDB[zip] || generic;
+
+  const title = isEs
+    ? (resourceDB[zip] ? `Recursos cerca del código postal ${zip}:` : `Recursos generales para el Condado de LA:`)
+    : (resourceDB[zip] ? `Resources near ZIP ${zip}:` : `General resources for LA County:`);
+
+  resultsDiv.innerHTML = `<p style="font-weight:600; margin-bottom:16px; font-size:14px; color:var(--green);">${title}</p>` +
+    resources.map(r => `
+      <div class="result-item">
+        <div class="result-icon">${r.icon}</div>
+        <div>
+          <div class="result-name">${r.name}</div>
+          <div class="result-detail">${r.detail}</div>
+        </div>
+      </div>`).join('');
+}
+
+document.getElementById('zip-input').addEventListener('keypress', e => {
+  if (e.key === 'Enter') findResources();
+});
+
+// ── CHECKLIST ─────────────────────────────────────
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  updateChecklistMsg();
+}
+
+function updateChecklistMsg() {
+  const checked = document.querySelectorAll('.check-item.checked').length;
+  const msg = document.getElementById('checklist-msg');
+  const isEs = document.body.classList.contains('lang-es');
+
+  if (checked === 0) { msg.style.display = 'none'; return; }
+
+  msg.style.display = 'block';
+  if (checked >= 3) {
+    msg.style.background = '#fde8e8';
+    msg.style.border = '1px solid #ffcdd2';
+    msg.innerHTML = isEs
+      ? `<strong>⚠️ Usted marcó ${checked} elementos.</strong> Esto sugiere una necesidad alimentaria significativa que puede estar afectando su salud hepática. <strong>Por favor, comparta esta lista con su médico o trabajador social en su próxima visita.</strong> Pueden ayudarle a conectarse con CalFresh, despensas de alimentos y apoyo nutricional.`
+      : `<strong>⚠️ You checked ${checked} items.</strong> This suggests significant food-related challenges that may be affecting your liver health. <strong>Please share this checklist with your doctor or social worker at your next visit.</strong> They can help connect you with CalFresh, food pantries, and nutritional support.`;
+  } else {
+    msg.style.background = '#fffbeb';
+    msg.style.border = '1px solid var(--amber)';
+    msg.innerHTML = isEs
+      ? `<strong>📋 Usted marcó ${checked} elemento(s).</strong> Considere compartir esto con su equipo de atención médica. Ellos pueden ayudarle a acceder a recursos de apoyo.`
+      : `<strong>📋 You checked ${checked} item(s).</strong> Consider sharing this with your care team. They can help you access support resources.`;
+  }
+}
+</script>
+</body>
+</html>
